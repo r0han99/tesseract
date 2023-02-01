@@ -30,7 +30,8 @@ def img_to_bytes(img_path):
 
 
 #make it look nice from the start
-st.set_page_config(layout='wide',page_title='tesseract')
+st.set_page_config(layout='wide',page_title='tesseract',)
+    
 
 
 # specify the primary menu definition
