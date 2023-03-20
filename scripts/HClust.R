@@ -33,10 +33,8 @@ head(crime_count_pivot,2)
 
 
 
-cosine_crime <- distance(as.matrix(crime_count_pivot), method="cosine"))
-dist_cosine_crime<- as.dist(cosine_crime)
 
-hc <- hclust(dist_cosine_crime, method = "ward.D2")
+hc <- hclust(dist(crime_count_pivot),method = "ward.D2")
 p <- ggdendrogram(hc, rotate = FALSE, size = 2) +   labs(title = "Community Areas Hirarchically Clustered based on the Frequency of Crimes Reported",x = "Community Areas", 
 )
 
@@ -61,10 +59,8 @@ rownames(crime_count_pivot) <- crime_count_pivot$Dristrict.Name
 crime_count_pivot
 
 
-cosine_crime <- distance(as.matrix(crime_count_pivot), method="cosine"))
-dist_cosine_crime<- as.dist(cosine_crime)
 
-hc <- hclust(dist_cosine_crime,method = "ward.D2")
+hc <- hclust(dist(crime_count_pivot),method = "ward.D2")
 p <- ggdendrogram(hc, rotate = FALSE, size = 2) + labs(title = "Districts Hirarchically Clustered based on the Frequency of Crimes Reported"
                                                        ,x = "Districts in Chicago",)
 
@@ -100,10 +96,9 @@ colnames(df) <- df[1,]
 df <- df[-1,]
 df
 
-cosine_crime <- distance(as.matrix(df), method="cosine"))
-dist_cosine_crime<- as.dist(cosine_crime)
 
-hc <- hclust(dist_cosine_crime,method = "ward.D2")
+
+hc <- hclust(dist(df),method = "ward.D2")
 p <- ggdendrogram(hc, rotate = FALSE, size = 2) + labs(title = "Crime Type Hirarchically Clustered on Socio-Economic Status ",x = "Community Areas", 
 )
 
