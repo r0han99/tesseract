@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>D3 Bar Plot Example</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    .bar {
+      fill: orange;
+    }
+    .bar-label {
+      font-size: 14px;
+      text-anchor: middle;
+      font-family: "Chakra Petch";
+    }
+    .bar-value {
+      font-size: 14px;
+      text-anchor: end;
+      fill: dodgerblue;
+      font-family: "Chakra Petch";
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const data = [
+      { label: 'True', value: 194889 },
+      { label: 'False', value: 980840 }
+    ];
+
+    const svg = d3.select('body')
+      .append('svg')
+      .attr('width', 400)
+      .attr('height', 300);
+
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const width = +svg.attr('width') - margin.left - margin.right;
+    const height = +svg.attr('height') - margin.top - margin.bottom;
+
+    const x = d3.scaleBand()
+      .rangeRound([0, width])
+      .padding(0.1)
+      .domain(data.map(d => d.label));
+
+    const y = d3.scaleLinear()
+      .rangeRound([height, 0])
+      .domain([0, d3.max(data, d => d.value)]);
+
+    const g = svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const bars = g.selectAll('.bar')
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('class', 'bar')
+      .attr('x', d => x(d.label))
+      .attr('y', height)
+      .attr('width', x.bandwidth())
+      .attr('height', 0)
+      .attr('fill', d => d.label === 'True' ? 'dodgerblue' : 'orange')
+      .transition()
+      .duration(1000)
+      .attr('y', d => y(d.value))
+      .attr('height', d => height - y(d.value));
+
+    const labels = g.selectAll('.bar-label')
+      .data(data)
+      .enter()
+      .append('text')
+      .attr('class', 'bar-label')
+      .attr('x', d => x(d.label) + x.bandwidth() / 2)
+      .attr('y', height + margin.bottom / 2)
+      .text(d => d.label);
+
+    const values = g.selectAll('.bar-value')
+      .data(data)
+      .enter()
+      .append('text')
+      .attr('class', 'bar-value')
+      .attr('x', d => x(d.label) + x.bandwidth() / 2)
+      .attr('y', d => y(d.value) - 5)
+      .text(d => d.value.toLocaleString());
+
+    // Change color on hover
+    bars.on('mouseover', function(d) {
+      d3.select(this).attr('fill', d.label === 'True' ? 'blue' : 'darkorange');
+    }).on('mouseout', function(d) {
+      d3.select(this).attr('fill', d.label === 'True' ? 'dodgerblue' : 'orange');
+    });
+  </script>
+</body>
+</html>
