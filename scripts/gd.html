@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gradient Descent Visualization</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+  </head>
+  <body>
+    <h1>Gradient Descent Visualization</h1>
+    <div id="chart"></div>
+    <script>
+      // Set up the chart dimensions
+      const margin = { top: 10, right: 30, bottom: 30, left: 60 };
+      const width = 600 - margin.left - margin.right;
+      const height = 400 - margin.top - margin.bottom;
+
+      // Create the SVG element
+      const svg = d3
+        .select("#chart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      // Define the function to plot
+      const func = x => x ** 2;
+
+      // Set up the x and y scales
+      const xScale = d3.scaleLinear().domain([-5, 5]).range([0, width]);
+      const yScale = d3.scaleLinear().domain([0, 25]).range([height, 0]);
+
+      // Create the x axis
+      const xAxis = d3.axisBottom(xScale);
+      svg
+        .append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+      // Create the y axis
+      const yAxis = d3.axisLeft(yScale);
+      svg.append("g").call(yAxis);
+
+      // Create the function plot
+      const line = d3
+        .line()
+        .x(d => xScale(d.x))
+        .y(d => yScale(d.y));
+      const plotData = d3.range(-5, 5, 0.1).map(x => ({ x, y: func(x) }));
+      svg
+        .append("path")
+        .datum(plotData)
+        .attr("fill", "none")
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+      // Define the learning rate and number of iterations
+      const learningRate = 0.1;
+      const numIterations = 10;
+
+      // Define the initial point
+      let currentPoint = { x: -4, y: func(-4) };
+
+      // Define the update function for gradient descent
+      const updatePoint = () => {
+        const gradient = 2 * currentPoint.x;
+        const newX = currentPoint.x - learningRate * gradient;
+        const newY = func(newX);
+        currentPoint = { x: newX, y: newY };
+        return currentPoint;
+      };
+
+      // Plot the initial point
+      svg
+        .append("circle")
+        .attr("cx", xScale(currentPoint.x))
+        .attr("cy", yScale(currentPoint.y))
+        .attr("r", 5)
+        .attr("fill", "red");
+
+      // Run the gradient descent updates
+      for (let i = 0; i < numIterations; i++) {
+        const updatedPoint = updatePoint();
+        svg
+          .append("line")
+          .attr("x1", xScale(currentPoint.x))
+          .attr("y1", yScale(currentPoint.y))
+          .attr("x2", xScale(updatedPoint.x
+      )
+      .attr("y2", yScale(updatedPoint.y))
+      .attr("stroke", "red")
+      .attr("stroke-width", 2);
+    svg
+      .append("circle")
+      .attr("cx", xScale(updatedPoint.x))
+      .attr("cy", yScale(updatedPoint.y))
+      .attr("r", 5)
+      .attr("fill", "red");
+    currentPoint = updatedPoint;
+  }
+</script>
+</body>
+</html>
