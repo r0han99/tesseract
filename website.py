@@ -3,6 +3,7 @@ import datetime
 import time
 import base64
 from pathlib import Path
+import plotly.express as px
 
 import plotly.figure_factory as ff
 
@@ -10,24 +11,26 @@ import plotly.figure_factory as ff
 import numpy as np
 from scipy.spatial import Delaunay
 
-u = np.linspace(0, 2*np.pi, 24)
-v = np.linspace(-1, 1, 8)
-u,v = np.meshgrid(u,v)
-u = u.flatten()
-v = v.flatten()
 
-tp = 1 + 0.5*v*np.cos(u/2.)
-x = tp*np.cos(u)
-y = tp*np.sin(u)
-z = 0.5*v*np.sin(u/2.)
 
-points2D = np.vstack([u,v]).T
-tri = Delaunay(points2D)
-simplices = tri.simplices
+category = st.selectbox('Select Sandbox Category', ['Support Vector Machines','Neural Networks',],key='category')
 
-fig = ff.create_trisurf(x=x, y=y, z=z,
-                         colormap="Portland",
-                         simplices=simplices,
-                         title="Mobius Band")
 
-st.plotly_chart(fig)
+if category == 'Neural Networks':
+    st.markdown('Testing Sample Plotly Animations')
+    
+    df = px.data.gapminder()
+
+    fig = px.bar(df, x="continent", y="pop", color="continent",
+    animation_frame="year", animation_group="country", range_y=[0,4000000000])
+    
+    st.plotly_chart(fig)
+
+elif category == 'Support Vector Machines':
+    st.markdown('''<c><h3>Support Vector Machines</h3></c>''', unsafe_allow_html=True)
+
+
+    df = px.data.gapminder()
+
+    fig = px.bar(df, x="continent", y="pop", color="continent",
+    animation_frame="year", animation_group="country", range_y=[0,4000000000])
