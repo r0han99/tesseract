@@ -5,3 +5,4 @@ plotly
 scipy
 pandas
 seaborn
+scikit-learn
