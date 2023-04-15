@@ -12,6 +12,7 @@ import numpy as np
 from scipy.spatial import Delaunay
 
 
+
 import matplotlib.pyplot as plt
 from sklearn.svm import LinearSVC
 from sklearn.datasets import make_moons
@@ -19,11 +20,11 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 
-category = st.selectbox('Select Sandbox Category', ['Support Vector Machines','Neural Networks',],key='category')
+category = st.selectbox('Select Sandbox Category', ['Select a Category','Support Vector Machines','Neural Networks',],key='category')
 st.markdown('***')
 
 if category == 'Neural Networks':
-    st.markdown('Testing Sample Plotly Animations')
+    st.markdown('''<center><h3>Neural Network Simulation</h3></center>''', unsafe_allow_html=True)
     
     df = px.data.gapminder()
 
@@ -89,3 +90,34 @@ elif category == 'Support Vector Machines':
 
     # streamlit pyplot show
     plothole.pyplot(fig,)
+
+
+
+
+
+
+else:
+   
+
+    u = np.linspace(0, 2*np.pi, 24)
+    v = np.linspace(-1, 1, 8)
+    u,v = np.meshgrid(u,v)
+    u = u.flatten()
+    v = v.flatten()
+
+    tp = 1 + 0.5*v*np.cos(u/2.)
+    x = tp*np.cos(u)
+    y = tp*np.sin(u)
+    z = 0.5*v*np.sin(u/2.)
+
+    points2D = np.vstack([u,v]).T
+    tri = Delaunay(points2D)
+    simplices = tri.simplices
+
+    st.markdown('''<center><h3>The Mobius Strip<sub>  by <a href="https://plotly.com/python/trisurf/">Plotly (DASH)</a></sub></h3></center>''', unsafe_allow_html=True)
+    fig = ff.create_trisurf(x=x, y=y, z=z,
+                            colormap="Portland",
+                            simplices=simplices,
+                            title="",
+                            )
+    st.plotly_chart(fig)
