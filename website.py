@@ -61,7 +61,7 @@ elif category == 'Support Vector Machines':
     #color_maps_list = ( 'BuGn_r', 'BuPu', 'BuPu_r', 'CMRmap', 'CMRmap_r', 'Dark2', 'Dark2_r', 'GnBu')
    
     col1, col2 = st.columns(2)
-    kernel = col1.selectbox('Choose Kernel',['Polynomial', 'Linear', 'RBF'],key='kernels')
+    kernel = col1.selectbox('Choose Kernel',['Polynomial', 'Radial Bias', 'Linear',],key='kernels')
     plothole = col1.empty()
 
     if kernel == 'Polynomial':
