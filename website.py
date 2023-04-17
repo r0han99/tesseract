@@ -187,10 +187,10 @@ else:
     tri = Delaunay(points2D)
     simplices = tri.simplices
 
-    st.markdown('''<center><h5>A Placeholder plot ~ The Mobius Strip<sub>  by <a href="https://plotly.com/python/trisurf/">Plotly (DASH)</a></sub></h5></center>''', unsafe_allow_html=True)
+    #st.markdown('''<center><h5>A Placeholder plot ~ The Mobius Strip<sub>  by <a href="https://plotly.com/python/trisurf/">Plotly (DASH)</a></sub></h5></center>''', unsafe_allow_html=True)
     fig = ff.create_trisurf(x=x, y=y, z=z,
                             colormap="Portland",
                             simplices=simplices,
                             title="",
                             )
-    st.plotly_chart(fig)
+    #st.plotly_chart(fig)
