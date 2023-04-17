@@ -70,7 +70,7 @@ elif category == 'Support Vector Machines':
 
         # sample size & noise control sliders
         col2.markdown("Data points distribution:")
-        n_samples = col2.slider("Samples", 2, 100)
+        n_samples = col2.slider("Samples", 2, 100, value=40)
         noise = col2.slider("Noise", 0.01, 1.00)
 
         # x & y variables assignment
@@ -116,7 +116,7 @@ elif category == 'Support Vector Machines':
         color_map = "Blues"
 
         col2.markdown("Data points distribution:")
-        n_samples = col2.slider("Samples", 2, 100,value=40)
+        n_samples = col2.slider("Samples", 2, 100, value=40)
         noise = col2.slider("Noise", 0.01, 1.00)
 
         X, y = make_circles(n_samples=n_samples,noise=noise, random_state=42)
