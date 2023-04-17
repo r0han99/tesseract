@@ -24,14 +24,30 @@ category = st.selectbox('Select Sandbox Category', ['Select a Category','Support
 st.markdown('***')
 
 if category == 'Neural Networks':
-    st.markdown('''<center><h3>Neural Network Simulation</h3></center>''', unsafe_allow_html=True)
+    st.markdown('''<center><h3>Neural Network Simulation (Under Development)</h3></center>''', unsafe_allow_html=True)
     
-    df = px.data.gapminder()
+    u=np.linspace(-np.pi/2, np.pi/2, 60)
+    v=np.linspace(0, np.pi, 60)
+    u,v=np.meshgrid(u,v)
+    u=u.flatten()
+    v=v.flatten()
 
-    fig = px.bar(df, x="continent", y="pop", color="continent",
-    animation_frame="year", animation_group="country", range_y=[0,4000000000])
+    x = (np.sqrt(2)*(np.cos(v)*np.cos(v))*np.cos(2*u) + np.cos(u)*np.sin(2*v))/(2 - np.sqrt(2)*np.sin(3*u)*np.sin(2*v))
+    y = (np.sqrt(2)*(np.cos(v)*np.cos(v))*np.sin(2*u) - np.sin(u)*np.sin(2*v))/(2 - np.sqrt(2)*np.sin(3*u)*np.sin(2*v))
+    z = (3*(np.cos(v)*np.cos(v)))/(2 - np.sqrt(2)*np.sin(3*u)*np.sin(2*v))
+
+    points2D = np.vstack([u, v]).T
+    tri = Delaunay(points2D)
+    simplices = tri.simplices
+
+    fig = ff.create_trisurf(x=x, y=y, z=z,
+                            colormap=['rgb(50, 0, 75)', 'rgb(200, 0, 200)', '#c8dcc8'],
+                            show_colorbar=True,
+                            simplices=simplices,
+                            title="Sample Plot ~ Boy's Surface")
     
     st.plotly_chart(fig)
+
 
 elif category == 'Support Vector Machines':
     #st.markdown('''<center><h3>Support Vector Machines<sub>  by <a href="https://medium.com/@sinchan.s/support-vector-machine-svm-in-action-using-streamlit-e3bc56208a85">sinchan</a></sub></h3></center>''', unsafe_allow_html=True)
@@ -154,6 +170,7 @@ elif category == 'Support Vector Machines':
 
 else:
    
+    st.markdown('''<center><h4>Select Sandbox Category ↑</h4></center>''', unsafe_allow_html=True)
 
     u = np.linspace(0, 2*np.pi, 24)
     v = np.linspace(-1, 1, 8)
@@ -170,7 +187,7 @@ else:
     tri = Delaunay(points2D)
     simplices = tri.simplices
 
-    st.markdown('''<center><h3>The Mobius Strip<sub>  by <a href="https://plotly.com/python/trisurf/">Plotly (DASH)</a></sub></h3></center>''', unsafe_allow_html=True)
+    st.markdown('''<center><h3>A Placeholder plot ~ The Mobius Strip<sub>  by <a href="https://plotly.com/python/trisurf/">Plotly (DASH)</a></sub></h3></center>''', unsafe_allow_html=True)
     fig = ff.create_trisurf(x=x, y=y, z=z,
                             colormap="Portland",
                             simplices=simplices,
