@@ -4,6 +4,7 @@ import time
 import base64
 from pathlib import Path
 import plotly.express as px
+import streamlit_ext as ste
 
 import plotly.figure_factory as ff
 
@@ -20,7 +21,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 
-category = st.selectbox('Select Sandbox Category', ['Select a Category','Support Vector Machines','Neural Networks',],key='category')
+category = ste.selectbox('Select Sandbox Category', ['Select a Category','Support Vector Machines','Neural Networks',],key='category')
 st.markdown('***')
 
 if category == 'Neural Networks':
