@@ -86,9 +86,8 @@ if category == 'Neural Networks':
         ncol2.markdown("")
         ncol2.markdown(f"Class: <br><b>{y}</b>",unsafe_allow_html=True)
 
-        prediction = model.predict(np.array(X).reshape(-1,7))
-        col1.write(prediction)
-        col1.write(classes)
+        prediction = model.predict(np.array(X).reshape(-1,7))        
+        col1.subheader(f"The Model Categorized this Sample of Data to be: {classes[prediction.argmax()]}")
         
 
 
