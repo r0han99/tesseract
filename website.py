@@ -36,7 +36,7 @@ def select_sample(data):
     return X.iloc[idx,:], y[idx]
 
 @st.cache_resource
-def load_model():
+def read_model():
     
     model = load_model('CRIME_CLASSIFIER.h5')
     return model
