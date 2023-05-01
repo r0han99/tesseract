@@ -94,7 +94,7 @@ if category == 'Neural Networks':
     else:
         
         col2.subheader('Now be a Cop!')
-        col2.subheader('Enter the Data to get Crime Classification')
+        col2.subheader('← Enter the Data to get Crime Classification')
         desc_map, loc_map, soc_map, day_map = load_dictionaries()
 
         #st.write(desc_map)
