@@ -87,7 +87,7 @@ if category == 'Neural Networks':
         ncol2.markdown(f"Class: <br><b>{y}</b>",unsafe_allow_html=True)
 
         prediction = model.predict(np.array(X).reshape(-1,7))        
-        col1.markdown(f'''The Model Classifies this Crime type to be: <b><span style='font-family:Georgia; font-size:25px; color:'crimson'>{classes[prediction.argmax()]}</span></b>''',unsafe_allow_html=True)
+        col1.markdown(f'''The Model Classifies this Crime type to be: <b><span style="font-family:Georgia; font-size:18px; color:'crimson';">{classes[prediction.argmax()]}</span></b>''',unsafe_allow_html=True)
         
 
 
@@ -116,7 +116,7 @@ if category == 'Neural Networks':
             input_list = np.array(input_list).reshape(-1,7)
             
             prediction = model.predict(input_list)
-            col1.markdown(f'''The Model Classifies this Crime type to be: <b><span style="font-family:Georgia; font-size:25px; color:'crimson';">{classes[prediction.argmax()]}</span></b>''',unsafe_allow_html=True)
+            col1.markdown(f'''The Model Classifies this Crime type to be: <b><span style="font-family:Georgia; font-size:18px; color:'crimson';">{classes[prediction.argmax()]}</span></b>''',unsafe_allow_html=True)
 
         
 
