@@ -8,8 +8,9 @@ import pickle
 
 import plotly.figure_factory as ff
 
-#import tensorflow as tf
-#from tensorflow import keras
+
+import tensorflow
+from keras.models import load_model
 
 
 import numpy as np
@@ -70,7 +71,7 @@ if category == 'Neural Networks':
     data = load_data()
     model = load_model()
     classes = ['BATTERY', 'CRIMINAL DAMAGE', 'NARCOTICS', 'ROBBERY', 'THEFT']
-    
+
     col1, col2 = st.columns([5,3])
     datatype = col2.selectbox('Data Type',['Choose From pre-sampled data.', "I'll make my own"], key='selectdata')
     if datatype == "Choose From pre-sampled data.":
