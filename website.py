@@ -39,7 +39,7 @@ def select_sample(data):
 @st.cache_resource
 def load_model():
     
-    model = keras.models.load_model('CRIME_CLASSIFIER.h5')
+    model = load_model('CRIME_CLASSIFIER.h5')
     return model
 
 @st.cache_data
