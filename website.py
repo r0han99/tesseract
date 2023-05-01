@@ -4,16 +4,17 @@ import time
 import base64
 from pathlib import Path
 import plotly.express as px
-import streamlit_ext as ste
+import pickle
 
 import plotly.figure_factory as ff
 
+#import tensorflow as tf
+#from tensorflow import keras
+
 
 import numpy as np
+import pandas as pd
 from scipy.spatial import Delaunay
-
-
-
 import matplotlib.pyplot as plt
 from sklearn.svm import LinearSVC, SVC
 from sklearn.datasets import make_moons, make_circles
@@ -21,33 +22,115 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 
-category = ste.selectbox('Select Sandbox Category', ['Select a Category','Support Vector Machines','Neural Networks',],key='category')
+
+@st.cache_data
+def load_data():
+
+    data = pd.read_csv('nn_data.csv').drop('Unnamed: 0',axis=1)
+    return data
+    
+
+def select_sample(data):
+    X, y = data.drop('y',axis=1), data['y']
+    idx = np.random.choice(X.index)
+    return X.iloc[idx,:], y[idx]
+
+@st.cache_resource
+def load_model():
+    
+    model = keras.models.load_model('CRIME_CLASSIFIER.h5')
+    return model
+
+@st.cache_data
+def load_dictionaries():
+    with open('desc_map.pkl', 'rb') as f:
+        desc_map = pickle.load(f)
+    with open('loc_map.pkl', 'rb') as f:
+        loc_map = pickle.load(f)
+    with open('soc_map.pkl', 'rb') as f:
+        soc_map = pickle.load(f)
+    with open('day_map.pkl', 'rb') as f:
+        day_map = pickle.load(f)
+
+    return desc_map, loc_map, soc_map, day_map
+
+
+
+
+
+category = st.selectbox('Select Sandbox Category', ['Select a Category','Support Vector Machines','Neural Networks',],key='category')
 st.markdown('***')
 
 if category == 'Neural Networks':
-    st.markdown('''<center><h3>Neural Network Simulation (Under Development)</h3></center>''', unsafe_allow_html=True)
+    st.markdown('''<center><h3>Neural Network Simulation</h3></center>''', unsafe_allow_html=True)
+
+    st.markdown('<center> <b>Crime type</b> Classifier Model in Action</center>',unsafe_allow_html=True)
+    st.markdown('***')
+
+    data = load_data()
+    model = load_model()
+    classes = ['BATTERY', 'CRIMINAL DAMAGE', 'NARCOTICS', 'ROBBERY', 'THEFT']
     
-    u=np.linspace(-np.pi/2, np.pi/2, 60)
-    v=np.linspace(0, np.pi, 60)
-    u,v=np.meshgrid(u,v)
-    u=u.flatten()
-    v=v.flatten()
+    col1, col2 = st.columns([5,3])
+    datatype = col2.selectbox('Data Type',['Choose From pre-sampled data.', "I'll make my own"], key='selectdata')
+    if datatype == "Choose From pre-sampled data.":
+        X, y = select_sample(data)
+        
+        ncol1, ncol2 = col2.columns(2)
+        ncol1.write(X)
+        ncol1.write('Sampled & Normalized X')
+        ncol2.markdown("")
+        ncol2.markdown("")
+        ncol2.markdown("")
+        ncol2.markdown("")
+        ncol2.markdown("")
+        ncol2.markdown(f"Class: <br><b>{y}</b>",unsafe_allow_html=True)
 
-    x = (np.sqrt(2)*(np.cos(v)*np.cos(v))*np.cos(2*u) + np.cos(u)*np.sin(2*v))/(2 - np.sqrt(2)*np.sin(3*u)*np.sin(2*v))
-    y = (np.sqrt(2)*(np.cos(v)*np.cos(v))*np.sin(2*u) - np.sin(u)*np.sin(2*v))/(2 - np.sqrt(2)*np.sin(3*u)*np.sin(2*v))
-    z = (3*(np.cos(v)*np.cos(v)))/(2 - np.sqrt(2)*np.sin(3*u)*np.sin(2*v))
+        prediction = model.predict(np.array(X).reshape(-1,7))
+        col1.write(prediction)
+        col1.write(classes)
+        
 
-    points2D = np.vstack([u, v]).T
-    tri = Delaunay(points2D)
-    simplices = tri.simplices
 
-    fig = ff.create_trisurf(x=x, y=y, z=z,
-                            colormap=['rgb(50, 0, 75)', 'rgb(200, 0, 200)', '#c8dcc8'],
-                            show_colorbar=True,
-                            simplices=simplices,
-                            title="Sample Plot ~ Boy's Surface")
-    
-    st.plotly_chart(fig)
+    else:
+        
+        col2.subheader('Now be a Cop! Enter the Data to get Crime Classification')
+        desc_map, loc_map, soc_map, day_map = load_dictionaries()
+
+        #st.write(desc_map)
+
+        with col1.form('Crime Details'):
+            icol1, icol2 = st.columns(2)
+            arrest = icol1.selectbox('Arrest',[True, False],key='arrest')
+            dayofweek = icol2.selectbox('Day of Week', day_map.keys(),key='arr')
+            description = icol1.selectbox('Description', desc_map.keys(),key='desc')
+            loc_desc = icol2.selectbox('Location Description', loc_map.keys(),key='locdesc')
+            socio = icol1.selectbox('Socio Economic Status', soc_map.keys(),key='socmap')
+            domestic = icol2.selectbox('Domestic', [True, False],key='domes')
+            comarea = st.selectbox('Community Area Number', np.arange(1,78) ,key='comar')
+
+            
+            submitted = st.form_submit_button('submit')
+
+        if submitted:
+            input_list = [arrest,desc_map[description], comarea, loc_map[loc_desc], domestic, soc_map[socio],day_map[dayofweek]]
+            input_list = np.array(input_list).reshape(-1,7)
+            
+            prediction = model.predict(input_list)
+            col1.write(prediction)
+            col1.write(classes)
+
+        
+
+
+
+        
+
+        
+
+
+
+   
 
 
 elif category == 'Support Vector Machines':
