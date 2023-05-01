@@ -68,7 +68,7 @@ if category == 'Neural Networks':
     st.markdown('***')
 
     data = load_data()
-    model = load_model()
+    model = read_model()
     classes = ['BATTERY', 'CRIMINAL DAMAGE', 'NARCOTICS', 'ROBBERY', 'THEFT']
 
     col1, col2 = st.columns([5,3])
