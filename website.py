@@ -101,7 +101,7 @@ if category == 'Neural Networks':
 
         with col1.form('Crime Details'):
             icol1, icol2 = st.columns(2)
-            arrest = icol1.selectbox('Arrest',[True, False],key='arrest')
+            arrest = icol1.selectbox('Arrested?',[True, False],key='arrest',)
             dayofweek = icol2.selectbox('Day of Week', day_map.keys(),key='arr')
             description = icol1.selectbox('Description', desc_map.keys(),key='desc')
             loc_desc = icol2.selectbox('Location Description', loc_map.keys(),key='locdesc')
