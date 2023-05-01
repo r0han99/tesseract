@@ -9,7 +9,7 @@ import pickle
 import plotly.figure_factory as ff
 
 import tensorflow as tf
-from tf.keras.models import load_model
+from tensorflow.keras.models import load_model
 
 
 import numpy as np
