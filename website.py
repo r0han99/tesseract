@@ -72,7 +72,7 @@ if category == 'Neural Networks':
     classes = ['BATTERY', 'CRIMINAL DAMAGE', 'NARCOTICS', 'ROBBERY', 'THEFT']
 
     col1, col2 = st.columns([5,3])
-    datatype = col2.selectbox('Data Type',['Choose From pre-sampled data.', "I'll make my own"], key='selectdata')
+    datatype = col2.selectbox('Data',["I'll create my own", 'Choose From pre-sampled data.', ], key='selectdata')
     if datatype == "Choose From pre-sampled data.":
         X, y = select_sample(data)
         
@@ -87,13 +87,14 @@ if category == 'Neural Networks':
         ncol2.markdown(f"Class: <br><b>{y}</b>",unsafe_allow_html=True)
 
         prediction = model.predict(np.array(X).reshape(-1,7))        
-        col1.markdown(f'''The Model Classifies this Crime type to be: <b><span style="font-family:Georgia; font-size:18px; color:'crimson';">{classes[prediction.argmax()]}</span></b>''',unsafe_allow_html=True)
+        col1.markdown(f'''The Model Classifies this Crime type to be: <b><span style="font-family:Georgia; font-size:18px; color:crimson;">{classes[prediction.argmax()]}</span></b>''',unsafe_allow_html=True)
         
 
 
     else:
         
-        col2.subheader('Now be a Cop! Enter the Data to get Crime Classification')
+        col2.subheader('Now be a Cop!')
+        col2.subheader('Enter the Data to get Crime Classification')
         desc_map, loc_map, soc_map, day_map = load_dictionaries()
 
         #st.write(desc_map)
